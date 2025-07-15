@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'home_screen.dart';
+import 'main_navigation_screen.dart';
 
 class OnboardingFeaturesScreen extends StatelessWidget {
   const OnboardingFeaturesScreen({super.key});
@@ -81,7 +81,7 @@ class OnboardingFeaturesScreen extends StatelessWidget {
                   if (context.mounted) {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (_) => const HomeScreen(),
+                        builder: (_) => const MainNavigationScreen(),
                       ),
                       (route) => false,
                     );
