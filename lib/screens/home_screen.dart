@@ -29,6 +29,12 @@ class HomeScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.show_chart), // Analytics icon
+            onPressed: () {
+              // TODO: Navigate to analytics screen or show analytics dialog
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {},
           ),
