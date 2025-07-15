@@ -37,9 +37,19 @@ class HabitHeroHomePage extends StatelessWidget {
                           fontFamily: 'Manrope',
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.settings, color: textPrimary),
-                        onPressed: () {},
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.show_chart, color: textPrimary),
+                            onPressed: () {
+                              // TODO: Navigate to analytics screen
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.settings, color: textPrimary),
+                            onPressed: () {},
+                          ),
+                        ],
                       ),
                     ],
                   ),
