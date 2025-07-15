@@ -4,7 +4,9 @@ import '../models/habit.dart';
 import '../providers/habit_provider.dart';
 
 class AddHabitBottomSheet extends StatefulWidget {
-  const AddHabitBottomSheet({super.key});
+  final Habit? habit;
+
+  const AddHabitBottomSheet({super.key, this.habit});
 
   @override
   State<AddHabitBottomSheet> createState() => _AddHabitBottomSheetState();
@@ -17,6 +19,19 @@ class _AddHabitBottomSheetState extends State<AddHabitBottomSheet> {
   IconData _selectedIcon = Icons.fitness_center;
   TimeOfDay _selectedTime = TimeOfDay.now();
   int _frequency = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    final habit = widget.habit;
+    if (habit != null) {
+      _nameController.text = habit.name;
+      _selectedColor = habit.color;
+      _selectedIcon = habit.icon;
+      _selectedTime = habit.reminderTime ?? TimeOfDay.now();
+      _frequency = habit.frequency;
+    }
+  }
 
   @override
   void dispose() {
@@ -153,20 +168,31 @@ class _AddHabitBottomSheetState extends State<AddHabitBottomSheet> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      final habit = Habit(
-                        name: _nameController.text,
-                        description: "",
-                        color: _selectedColor,
-                        icon: _selectedIcon,
-                        createdAt: DateTime.now(),
-                        reminderTime: _selectedTime,
-                        frequency: _frequency,
-                      );
-                      context.read<HabitProvider>().addHabit(habit);
+                      if (widget.habit == null) {
+                        final habit = Habit(
+                          name: _nameController.text,
+                          description: "",
+                          color: _selectedColor,
+                          icon: _selectedIcon,
+                          createdAt: DateTime.now(),
+                          reminderTime: _selectedTime,
+                          frequency: _frequency,
+                        );
+                        context.read<HabitProvider>().addHabit(habit);
+                      } else {
+                        final updated = widget.habit!.copyWith(
+                          name: _nameController.text,
+                          color: _selectedColor,
+                          icon: _selectedIcon,
+                          reminderTime: _selectedTime,
+                          frequency: _frequency,
+                        );
+                        context.read<HabitProvider>().updateHabit(updated);
+                      }
                       Navigator.pop(context);
                     }
                   },
-                  child: const Text('Add Habit'),
+                  child: Text(widget.habit == null ? 'Add Habit' : 'Update Habit'),
                 ),
               ],
             ),
