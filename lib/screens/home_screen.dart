@@ -15,6 +15,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+  late final PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,37 +110,29 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    Widget body;
-    switch (_currentIndex) {
-      case 0:
-        body = ListView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: habits.length,
-          itemBuilder: (context, index) =>
-              buildLargeCard(habits[index]),
-        );
-        break;
-      case 1:
-        body = ListView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: habits.length,
-          itemBuilder: (context, index) =>
-              HabitTile(habit: habits[index]),
-        );
-        break;
-      default:
-        body = GridView.builder(
-          padding: const EdgeInsets.all(16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1.3,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-          ),
-          itemCount: habits.length,
-          itemBuilder: (context, index) => buildSmallCard(habits[index]),
-        );
-    }
+    final pages = [
+      ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: habits.length,
+        itemBuilder: (context, index) => buildLargeCard(habits[index]),
+      ),
+      ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: habits.length,
+        itemBuilder: (context, index) => HabitTile(habit: habits[index]),
+      ),
+      GridView.builder(
+        padding: const EdgeInsets.all(16),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.3,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+        ),
+        itemCount: habits.length,
+        itemBuilder: (context, index) => buildSmallCard(habits[index]),
+      ),
+    ];
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
@@ -169,13 +174,22 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: body,
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        children: pages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
           });
+          _pageController.jumpToPage(index);
         },
         items: const [
           BottomNavigationBarItem(
