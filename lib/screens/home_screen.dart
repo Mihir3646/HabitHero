@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/custom_action_button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -23,13 +24,13 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.settings),
+        leading: CustomActionButton(
+          icon: Icons.settings,
           onPressed: () {},
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
+          CustomActionButton(
+            icon: Icons.add,
             onPressed: () {},
           ),
         ],
@@ -113,31 +114,27 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            Text(
-              date,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
+            SizedBox(
+              height: 100,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 7, // 7 days of the week
+                itemBuilder: (context, weekIndex) {
+                  return Column(
+                    children: List.generate(7, (dayIndex) {
+                      return Container(
+                        margin: const EdgeInsets.all(2.0),
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: (weekIndex + dayIndex) % 2 == 0 ? Colors.blue : Colors.grey,
+                        ),
+                      );
+                    }),
+                  );
+                },
               ),
-            ),
-            const SizedBox(height: 16),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 30,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5,
-                crossAxisSpacing: 4,
-                mainAxisSpacing: 4,
-              ),
-              itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: isCompleted ? Colors.purple[100] : Colors.pink[100],
-                    shape: BoxShape.circle,
-                  ),
-                );
-              },
             ),
           ],
         ),
