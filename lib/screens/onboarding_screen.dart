@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'onboarding_features_screen.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -60,7 +61,11 @@ class OnboardingScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
-                  // TODO: Navigate to next screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const OnboardingFeaturesScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF1993E5),
