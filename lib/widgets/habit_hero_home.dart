@@ -8,7 +8,6 @@ class HabitHeroHomePage extends StatelessWidget {
   static const surface = Color(0xFF1e1e1e);
   static const primary = Color(0xFF0c92f2);
   static const secondary = Color(0xFF27ae60);
-  static const accent = Color(0xFFf2994a);
   static const textPrimary = Colors.white;
   static const textSecondary = Color(0xFFA0A0A0);
 
@@ -86,7 +85,7 @@ class HabitHeroHomePage extends StatelessWidget {
                           title: 'Meditate',
                           subtitle: 'Streak: 21 days',
                           streak: 21,
-                          color: accent,
+                          color: primary,
                         ),
                       ],
                     ),
@@ -201,7 +200,7 @@ class _HabitCard extends StatelessWidget {
           ),
           Row(
             children: [
-              const Text('🔥', style: TextStyle(fontSize: 20, color: accent)),
+              Text('🔥', style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.secondary)),
               const SizedBox(width: 4),
               Text(
                 '$streak',
