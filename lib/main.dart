@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'providers/habit_provider.dart';
 import 'screens/home_screen.dart';
+import 'screens/onboarding_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,13 +11,15 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => HabitProvider(prefs),
-      child: const MyApp(),
+      child: MyApp(prefs: prefs),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final SharedPreferences prefs;
+
+  const MyApp({super.key, required this.prefs});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +40,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       themeMode: ThemeMode.system,
-      home: const HomeScreen(),
+      home: prefs.getBool('onboarding_complete') == true
+          ? const HomeScreen()
+          : const OnboardingScreen(),
     );
   }
 }
