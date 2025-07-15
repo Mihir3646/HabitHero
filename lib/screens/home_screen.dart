@@ -1,10 +1,134 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/habit_provider.dart';
+import '../widgets/habit_tile.dart';
+import '../widgets/add_habit_bottom_sheet.dart';
+import '../models/habit.dart';
+import 'settings_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
+
+  @override
   Widget build(BuildContext context) {
+    final habits = context.watch<HabitProvider>().habits;
+
+    Widget buildDots() {
+      return SizedBox(
+        height: 100,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 7,
+          itemBuilder: (context, weekIndex) {
+            return Column(
+              children: List.generate(7, (dayIndex) {
+                return Container(
+                  margin: const EdgeInsets.all(2.0),
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: (weekIndex + dayIndex) % 2 == 0
+                        ? Colors.blue
+                        : Colors.grey,
+                  ),
+                );
+              }),
+            );
+          },
+        ),
+      );
+    }
+
+    Widget buildLargeCard(Habit habit) {
+      return Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    habit.name,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Icon(
+                    habit.isCompletedToday
+                        ? Icons.check_circle
+                        : Icons.add_circle,
+                    color:
+                        habit.isCompletedToday ? Colors.pink : Colors.blue,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              buildDots(),
+            ],
+          ),
+        ),
+      );
+    }
+
+    Widget buildSmallCard(Habit habit) {
+      return Card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(habit.icon, color: habit.color),
+            const SizedBox(height: 8),
+            Text(habit.name),
+          ],
+        ),
+      );
+    }
+
+    Widget body;
+    switch (_currentIndex) {
+      case 0:
+        body = ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: habits.length,
+          itemBuilder: (context, index) =>
+              buildLargeCard(habits[index]),
+        );
+        break;
+      case 1:
+        body = ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: habits.length,
+          itemBuilder: (context, index) =>
+              HabitTile(habit: habits[index]),
+        );
+        break;
+      default:
+        body = GridView.builder(
+          padding: const EdgeInsets.all(16),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 1.3,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+          ),
+          itemCount: habits.length,
+          itemBuilder: (context, index) => buildSmallCard(habits[index]),
+        );
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
       appBar: AppBar(
@@ -25,49 +149,34 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.settings),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SettingsScreen()),
+            );
+          },
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (_) => const AddHabitBottomSheet(),
+              );
+            },
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ChoiceChip(
-                  label: const Text('Fitness'),
-                  selected: true,
-                  onSelected: (selected) {},
-                ),
-                const SizedBox(width: 8),
-                ChoiceChip(
-                  label: const Text('Health'),
-                  selected: false,
-                  onSelected: (selected) {},
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: ListView(
-                children: [
-                  _buildHabitCard('Study', 'Jul 2025', true),
-                  const SizedBox(height: 16),
-                  _buildHabitCard('Exercise', 'Jul 2025', false),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: body,
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.grid_view),
@@ -86,58 +195,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHabitCard(String title, String date, bool isCompleted) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Icon(
-                  isCompleted ? Icons.check_circle : Icons.add_circle,
-                  color: isCompleted ? Colors.pink : Colors.blue,
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              height: 100,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 7, // 7 days of the week
-                itemBuilder: (context, weekIndex) {
-                  return Column(
-                    children: List.generate(7, (dayIndex) {
-                      return Container(
-                        margin: const EdgeInsets.all(2.0),
-                        width: 10,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: (weekIndex + dayIndex) % 2 == 0 ? Colors.blue : Colors.grey,
-                        ),
-                      );
-                    }),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
