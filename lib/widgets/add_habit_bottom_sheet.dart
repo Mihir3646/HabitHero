@@ -155,15 +155,11 @@ class _AddHabitBottomSheetState extends State<AddHabitBottomSheet> {
                     if (_formKey.currentState!.validate()) {
                       final habit = Habit(
                         name: _nameController.text,
+                        description: "",
                         color: _selectedColor,
                         icon: _selectedIcon,
-                        reminderTime: DateTime(
-                          DateTime.now().year,
-                          DateTime.now().month,
-                          DateTime.now().day,
-                          _selectedTime.hour,
-                          _selectedTime.minute,
-                        ),
+                        createdAt: DateTime.now(),
+                        reminderTime: _selectedTime,
                         frequency: _frequency,
                       );
                       context.read<HabitProvider>().addHabit(habit);

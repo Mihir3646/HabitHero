@@ -46,13 +46,13 @@ class OnboardingPrivacyScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFBFDBFE).withOpacity(0.5),
+                      color: const Color(0xFFBFDBFE).withAlpha((0.5 * 255).toInt()),
                       shape: BoxShape.circle,
                     ),
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF93C5FD).withOpacity(0.6),
+                        color: const Color(0xFF93C5FD).withAlpha((0.6 * 255).toInt()),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(

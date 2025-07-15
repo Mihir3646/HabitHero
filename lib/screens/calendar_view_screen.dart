@@ -141,7 +141,7 @@ class _SummaryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha((0.05 * 255).toInt()),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

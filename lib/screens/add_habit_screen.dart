@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const cornflowerBlue = Color(0xFF6495ED);
+
 class AddHabitScreen extends StatelessWidget {
   const AddHabitScreen({super.key});
 
@@ -60,8 +62,9 @@ class AddHabitScreen extends StatelessWidget {
                   Colors.yellow,
                   Colors.lime,
                   Colors.teal,
-                  Colors.cornflowerBlue,
-                  Colors.orchid,
+                  cornflowerBlue,
+                  Colors.blueAccent,
+                  Colors.purple[200],
                 ];
                 return ChoiceChip(
                   label: Container(),

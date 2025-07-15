@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/habit_provider.dart';
-import '../widgets/habit_tile.dart';
-import '../widgets/add_habit_bottom_sheet.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

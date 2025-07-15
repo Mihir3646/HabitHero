@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/habit.dart';
 import 'dart:convert';
 
-class HabitProvider extends ChangeNotifier {
+class HabitProvider with ChangeNotifier {
   final List<Habit> _habits = [];
   final List<Habit> _archivedHabits = [];
   final SharedPreferences _prefs;
@@ -12,8 +12,8 @@ class HabitProvider extends ChangeNotifier {
     _loadHabits();
   }
 
-  List<Habit> get habits => List.unmodifiable(_habits);
-  List<Habit> get archivedHabits => List.unmodifiable(_archivedHabits);
+  List<Habit> get habits => _habits;
+  List<Habit> get archivedHabits => _archivedHabits;
 
   void addHabit(Habit habit) {
     _habits.add(habit);
@@ -97,6 +97,7 @@ class HabitProvider extends ChangeNotifier {
         _archivedHabits.add(habit);
       }
     }
+    notifyListeners();
   }
 
   void _saveHabits() {
