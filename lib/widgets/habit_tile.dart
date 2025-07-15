@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/habit.dart';
+import '../screens/habit_detail_screen.dart';
 
 class HabitTile extends StatelessWidget {
   final Habit habit;
@@ -15,7 +16,12 @@ class HabitTile extends StatelessWidget {
       elevation: 2,
       child: InkWell(
         onTap: () {
-          // TODO: Navigate to habit details
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => HabitDetailScreen(habit: habit),
+            ),
+          );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
