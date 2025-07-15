@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'providers/habit_provider.dart';
-import 'screens/home_screen.dart';
+import 'screens/main_navigation_screen.dart';
 import 'screens/onboarding_screen.dart';
 
 void main() async {
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.system,
       home: prefs.getBool('onboarding_complete') == true
-          ? const HomeScreen()
+          ? const MainNavigationScreen()
           : const OnboardingScreen(),
     );
   }

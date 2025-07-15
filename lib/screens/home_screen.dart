@@ -4,7 +4,6 @@ import '../providers/habit_provider.dart';
 import '../widgets/habit_tile.dart';
 import '../widgets/add_habit_bottom_sheet.dart';
 import '../models/habit.dart';
-import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -152,15 +151,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.settings),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const SettingsScreen()),
-            );
-          },
-        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -183,28 +173,67 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         children: pages,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          _pageController.jumpToPage(index);
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.checklist),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.view_list),
-            label: '',
-          ),
-        ],
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.grid_view,
+                color: _currentIndex == 0
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.grey,
+              ),
+              onPressed: () {
+                setState(() {
+                  _currentIndex = 0;
+                });
+                _pageController.jumpToPage(0);
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.checklist,
+                color: _currentIndex == 1
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.grey,
+              ),
+              onPressed: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+                _pageController.jumpToPage(1);
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.view_list,
+                color: _currentIndex == 2
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.grey,
+              ),
+              onPressed: () {
+                setState(() {
+                  _currentIndex = 2;
+                });
+                _pageController.jumpToPage(2);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -32,22 +32,7 @@ class SettingsScreen extends StatelessWidget {
           _buildListTile('Privacy Policy', 'Shield', icon: Icons.security),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard, color: Color(0xFF6d8566)),
-            label: 'Dashboard',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today, color: Color(0xFF6d8566)),
-            label: 'Calendar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings, color: Color(0xFF131712)),
-            label: 'Settings',
-          ),
-        ],
-      ),
+      // Bottom navigation is provided by MainNavigationScreen
     );
   }
 
